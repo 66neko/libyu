@@ -109,7 +109,7 @@ public:
 
 	template <typename  T, typename  ... Types>
 	void WriteBody(const T &head, const Types ... _value) {
-		fprintf(m_out, head, value...);
+		fprintf(m_out, head, _value...);
 		//fprintf(stderr, head, _value...);
 		return;
 	}
