@@ -173,8 +173,12 @@ public:
 		return log_lv;
 	}
 
-	template <typename  T, typename  ... Types>
-	void WriteBody(const int lvl, const T &head, const Types ... _value) {
+#ifdef __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-security"
+#endif
+	template <typename  ... Types>
+	void WriteBody(const int lvl, const char *head, const Types ... _value) {
 		if (m_lvl_out[lvl] == nullptr)
 		{
 			if (m_out != stderr)
@@ -193,6 +197,9 @@ public:
 		fprintf(stderr, head, _value...);
 		return;
 	}
+#ifdef __GNUC__
+#pragma GCC diagnostic pop
+#endif
 
 	void Flush() {
 		fflush(m_out);
