@@ -168,7 +168,7 @@ public:
 		WriteBody(log_lv, str);
 		WriteBody(log_lv, "[%s:%d]", file, line);
 		WriteBody(log_lv, "[pid=%d]", _getpid());
-		WriteBody(log_lv, "[thread=%d]", std::this_thread::get_id());
+		WriteBody(log_lv, "[thread=%u]", std::this_thread::get_id());
 		WriteBody(log_lv, "[%s]", lv_str[log_lv].c_str());
 		return log_lv;
 	}
