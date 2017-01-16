@@ -7,7 +7,6 @@
 #pragma once
 #include <atomic>
 #include <mutex>
-#include <thread>
 
 
 #define _THREADSAFE namespace threadsafe {
@@ -28,10 +27,7 @@ public:
 	}
 
 	void lock() {
-		while (m_flag.test_and_set())
-		{
-			std::this_thread::yield();
-		}
+		while (m_flag.test_and_set());
 	}
 	void unlock() {
 		m_flag.clear();

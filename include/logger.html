@@ -1,0 +1,78 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <title></title>
+<style id="system" type="text/css">*{margin:0;padding:0;}body {	font:13.34px helvetica,arial,freesans,clean,sans-serif;	color:black;	line-height:1.4em;	background-color: #F8F8F8;	padding: 0.7em;}p {	margin:1em 0;	line-height:1.5em;}table {	font-size:inherit;	font:100%;	margin:1em;}table th{border-bottom:1px solid #bbb;padding:.2em 1em;}table td{border-bottom:1px solid #ddd;padding:.2em 1em;}input[type=text],input[type=password],input[type=image],textarea{font:99% helvetica,arial,freesans,sans-serif;}select,option{padding:0 .25em;}optgroup{margin-top:.5em;}pre,code{font:12px Monaco,"Courier New","DejaVu Sans Mono","Bitstream Vera Sans Mono",monospace;}pre {	margin:1em 0;	font-size:12px;	background-color:#eee;	border:1px solid #ddd;	padding:5px;	line-height:1.5em;	color:#444;	overflow:auto;	-webkit-box-shadow:rgba(0,0,0,0.07) 0 1px 2px inset;	-webkit-border-radius:3px;	-moz-border-radius:3px;border-radius:3px;white-space: pre-wrap;word-wrap:break-word;}pre code {	padding:0;	font-size:12px;	background-color:#eee;	border:none;}code {	font-size:12px;	background-color:#f8f8ff;	color:#444;	padding:0 .2em;	border:1px solid #dedede;}img{border:0;max-width:100%;}abbr{border-bottom:none;}a{color:#4183c4;text-decoration:none;}a:hover{text-decoration:underline;}a code,a:link code,a:visited code{color:#4183c4;}h2,h3{margin:1em 0;}h1,h2,h3,h4,h5,h6{border:0;}h1{font-size:170%;border-top:4px solid #aaa;padding-top:.5em;margin-top:1.5em;}h1:first-child{margin-top:0;padding-top:.25em;border-top:none;}h2{font-size:150%;margin-top:1.5em;border-top:4px solid #e0e0e0;padding-top:.5em;}h3{margin-top:1em;}hr{border:1px solid #ddd;}ul{margin:1em 0 1em 2em;}ol{margin:1em 0 1em 2em;}ul li,ol li{margin-top:.5em;margin-bottom:.5em;}ul ul,ul ol,ol ol,ol ul{margin-top:0;margin-bottom:0;}blockquote{margin:1em 0;border-left:5px solid #ddd;padding-left:.6em;color:#555;}dt{font-weight:bold;margin-left:1em;}dd{margin-left:2em;margin-bottom:1em;}@media screen and (min-width: 768px) {    body {        width: 748px;        margin:10px auto;    }}</style><style id="custom" type="text/css"></style></head>
+<body marginheight="0"><h1>logger使用说明</h1>
+<h2>使用方式</h2>
+<blockquote>
+<p>#include "logger.hpp"
+
+
+</p>
+</blockquote>
+<h2>API说明</h2>
+<ul>
+<li><p><code>LOGGER_INIT(fileName,level)</code><br>
+初始化logger，全局唯一。<code>fileName</code>为文件名或输出流，<code>level</code>为日志等级。</p>
+<blockquote>
+<p><code>fileName</code>可以是带路径的文件名，例如<code>"/tmp/temp.log"</code>。<br>
+<code>fileName</code>可以是输出流，例如<code>stdout</code>或<code>stderr</code>。<br>
+<code>level</code>为日志记录等级：<br>
+0 - ERROR<br>
+1 - WARNING<br>
+2 - INFO<br> 
+3 - DEBUG<br>
+示例：<code>LOGGER_INIT(stderr,3);</code>表示将日志输出到<code>stderr</code>，日志记录等级为所有.</p>
+</blockquote>
+</li>
+<li><p><code>LOGGER_SET(level,fileName)</code><br>
+设置单个级别的日志输出位置，全局属性。<code>fileName</code>和<code>level</code>的定义同上</p>
+</li>
+<li><p><code>LOGGER_ERROR(format, ...)</code></p>
+</li>
+<li><code>LOGGER_WARNING(format, ...)</code></li>
+<li><code>LOGGER_INFO(format, ...)</code></li>
+<li><code>LOGGER_DEBUG(format, ...)</code><br>
+打印日志，打印4个不同的等级的日志，使用方式同C语言标准输出<code>printf()</code>.</li>
+</ul>
+<blockquote>
+<p>note: 如果单个文件内需要屏蔽某个等级的日志，可以使用宏覆盖的方式，例如:
+
+</p>
+</blockquote>
+<pre><code class="lang-cpp">#include "logger.hpp"
+
+//重新定义LOGGER_DEBUG宏可以在单个文件内屏蔽某个等级的日志
+#define LOGGER_DEBUG(...)
+
+int main()
+{
+    LOGGER_DEBUG("app start");
+}</code></pre>
+<blockquote>
+<p>note: 日志文件采用追加的方式，使用相同文件不会覆盖掉之前的日志。
+
+</p>
+<p>note: 在linux内核的系统下，<code>stdout</code>和<code>stderr</code>可以分别重定向，例如：(更详细的用法参考linux shell)
+
+</p>
+</blockquote>
+<pre><code class="lang-shell">console &gt;&gt; ./sample 1&gt;stdout.log 2&gt;stderr.log</code></pre>
+<h2>完整demo</h2>
+<pre><code class="lang-cpp">#include "logger.hpp"
+
+int main()
+{
+    //初始化载入日志等级为3,输出到stderr
+    LOGGER_INIT(stderr,3);
+    //设置DEBUG级别的日志单独输出到stdout
+    LOGGER_SET(3,stdout);
+    //输出一条ERROR级别的日志
+    LOGGER_ERROR("error code:%d",4);
+    //输出一条WARNING级别的日志
+    LOGGER_WARNING("warning:%s","a warning sample");
+
+    return 0;
+}</code></pre>
+<p>Edit By Yume.Liu</p>
+</body></html>
