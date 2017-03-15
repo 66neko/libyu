@@ -1,7 +1,8 @@
 /*
-
-	spin lock
-	by yume.liu
+*	logger-libyu
+*	copyright - libyu
+*	date - 2017-1-10
+*	github - https://github.com/yuyugenius/libyu
 */
 
 #pragma once
