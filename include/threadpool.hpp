@@ -2,7 +2,7 @@
 *	logger-libyu
 *	copyright - libyu
 *	date - 2017-1-10
-*	github - https://github.com/yuyugenius/libyu
+*	github - https://github.com/66neko/libyu
 */
 #pragma once
 #include <memory>
