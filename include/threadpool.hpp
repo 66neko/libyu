@@ -1,5 +1,5 @@
 /*
-*	logger-libyu
+*	threadpool-libyu
 *	copyright - libyu
 *	date - 2017-1-10
 *	github - https://github.com/66neko/libyu
@@ -17,6 +17,9 @@
 
 #ifdef __linux__
 #include <sys/prctl.h>
+#define _LIBYU_TP_SET_THREAD_NAME(x) prctl(PR_SET_NAME, x);
+#else
+#define _LIBYU_TP_SET_THREAD_NAME(x)
 #endif // __linux__
 
 class thread_pool {
@@ -99,9 +102,7 @@ private:
 	}
 
 	void schedual() {
-#ifdef __linux__
-		prctl(PR_SET_NAME, "LIBYU_THREADPOOL");
-#endif // __linux__
+		_LIBYU_TP_SET_THREAD_NAME("LIBYU_THREADPOOL");
 		while (!terminate_flag.load()) {
 			Task task;
 			if (get_one_task(task)) {

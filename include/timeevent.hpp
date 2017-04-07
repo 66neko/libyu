@@ -12,6 +12,9 @@
 
 #ifdef __linux__
 #include <sys/prctl.h>
+#define _LIBYU_TE_SET_THREAD_NAME(x) prctl(PR_SET_NAME, x);
+#else
+#define _LIBYU_TE_SET_THREAD_NAME(x)
 #endif // __linux__
 
 class time_envent
@@ -38,9 +41,7 @@ public:
 		std::chrono::duration<uint32_t> time_span1{ std::chrono::duration_cast<std::chrono::duration<uint32_t>>(t1 - m_time_base) };
 		m_time_sec = time_span1.count();
 		m_t = std::make_shared<std::thread>([&]() {
-#ifdef __linux__
-			prctl(PR_SET_NAME, "LIBYU_TIME_EVENT_THREAD");
-#endif // __linux__
+			_LIBYU_TE_SET_THREAD_NAME("LIBYU_TIME_EVENT_THREAD");
 			while (!m_off)
 			{
 				if (m_ent.size() != 0 && m_ent.front().timebase <= m_time_sec)
