@@ -15,6 +15,9 @@
 #include <future>
 #include <condition_variable>
 
+#ifdef __linux__
+#include <sys/prctl.h>
+#endif // __linux__
 
 class thread_pool {
 	using Task = std::function<void()>;
@@ -96,6 +99,9 @@ private:
 	}
 
 	void schedual() {
+#ifdef __linux__
+		prctl(PR_SET_NAME, "LIBYU_THREADPOOL");
+#endif // __linux__
 		while (!terminate_flag.load()) {
 			Task task;
 			if (get_one_task(task)) {

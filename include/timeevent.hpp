@@ -1,14 +1,19 @@
 /*
-*	logger-libyu
+*	time_event-libyu
 *	copyright - libyu
 *	date - 2017-1-10
-*	github - https://github.com/yuyugenius/libyu
+*	github - https://github.com/66neko/libyu
 */
 #pragma once
 #include "tslist.hpp"
 #include <thread>
 #include <future>
 #include <iostream>
+
+#ifdef __linux__
+#include <sys/prctl.h>
+#endif // __linux__
+
 class time_envent
 {
 	struct sEnvent
@@ -33,6 +38,9 @@ public:
 		std::chrono::duration<uint32_t> time_span1{ std::chrono::duration_cast<std::chrono::duration<uint32_t>>(t1 - m_time_base) };
 		m_time_sec = time_span1.count();
 		m_t = std::make_shared<std::thread>([&]() {
+#ifdef __linux__
+			prctl(PR_SET_NAME, "LIBYU_TIME_EVENT_THREAD");
+#endif // __linux__
 			while (!m_off)
 			{
 				if (m_ent.size() != 0 && m_ent.front().timebase <= m_time_sec)
