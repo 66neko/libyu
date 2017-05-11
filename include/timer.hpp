@@ -1,8 +1,8 @@
 /*
-*	logger-libyu
+*	timer - libyu
 *	copyright - libyu
 *	date - 2017-3-5
-*	github - https://github.com/yuyugenius/libyu
+*	github - https://github.com/66neko/libyu
 */
 #include <chrono>  
 
