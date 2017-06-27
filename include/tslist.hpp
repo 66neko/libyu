@@ -101,7 +101,7 @@ public:
 		while (true)
 		{
 			
-#ifdef _GCC_LINUX
+#ifdef __gnuc__
 			std::lock_guard<threadsafe::spin_lock> lock{ sp };
 			std::shared_ptr<Tnode> next{ prev->next };
 			new_node->next = next;
@@ -114,13 +114,13 @@ public:
 			{
 				return;
 			}
-#endif // _GCC_LINUX	
+#endif // __gnuc__	
 		}
 	}
 
 	void pop() {
 		std::shared_ptr<Tnode> old_head{ m_head };
-#ifdef _GCC_LINUX
+#ifdef __gnuc__
 		std::lock_guard<threadsafe::spin_lock> lock{ sp };
 		//while (old_head && !__sync_bool_compare_and_swap(m_head, *(old_head.get()), *((old_head->next).get())));
 		if (old_head) 
@@ -130,7 +130,7 @@ public:
 		return;
 #else
 		while (old_head && !std::atomic_compare_exchange_weak(&m_head, &old_head, old_head->next));
-#endif // _GCC_LINUX	
+#endif // __gnuc__	
 	}
 
 	const T& front() const {
